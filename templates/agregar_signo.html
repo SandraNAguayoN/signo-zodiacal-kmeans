@@ -1,0 +1,172 @@
+{% extends "layout.html" %}
+{% block title %} Agregar registro {% endblock %}
+{% block content %}
+
+<section class="section">
+  <div style="width:800px; padding-left: 200px;">
+    <div class="columns">
+        <div class="column">
+            <h3 class="is-size-3">Agregar registro</h3>
+            <form action="{{url_for('guardar_signo')}}" method="post">
+              
+
+                <div class="form-group">
+                  <label for="signo_zodiacal">Rango de fecha de nacimiento:</label>
+                  <select class="form-control" id="signo_zodiacal" name="signo_zodiacal">
+                    <option value="Capricornio">22 de diciembre - 19 de enero</option>
+                    <option value="Acuario">20 de enero - 18 de febrero</option>
+                    <option value="Piscis">19 de febrero - 20 de marzo</option>
+                    <option value="Aries">21 de marzo - 19 de abril</option>
+                    <option value="Tauro">20 de abril - 20 de mayo</option>
+                    <option value="Geminis">21 de mayo - 20 de junio</option>
+                    <option value="Cancer">21 de junio - 22 de julio</option>
+                    <option value="Leo">23 de julio - 22 de agosto</option>
+                    <option value="Virgo">23 de agosto - 22 de septiembre</option>
+                    <option value="Libra">23 de septiembre - 22 de octubre</option>
+                    <option value="Escorpio">23 de octubre - 21 de noviembre</option>
+                    <option value="Sagitario">22 de noviembre - 21 de diciembre</option>
+                  </select>
+              </div>
+     
+              <div class="form-group">
+                  <label for="p1">1. ¿En un equipo de trabajo prefieres dar órdenes que recibirlas?</label>
+                  <select class="form-control" id="p1" name="p1">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p2">2. Si fueras el líder en un equipo de trabajo ¿Exigirías, y darías retroalimentación y críticas a los trabajos de los demás miembros para obtener buenos resultados?</label>
+                  <select class="form-control" id="p2" name="p2">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p3">3. ¿Si ves que una persona se cae en la calle o tiene problemas con algo, te acercas a ayudarla?</label>
+                  <select class="form-control" id="p3" name="p3">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p4">4. ¿Te resulta fácil tomar una decisión cuando te encuentras en una situación crítica, difícil o de suma importancia?</label>
+                  <select class="form-control" id="p4" name="p4">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p5">5. ¿Eres una persona que a menudo muestra afecto y sentimientos a las personas cercanas (familia, amigos, pareja)?</label>
+                  <select class="form-control" id="p5" name="p5">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p6">6. ¿Eres el primero en iniciar una conversación o presentarte al conocer a alguien nuevo?</label>
+                  <select class="form-control" id="p6" name="p6">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p7">7. Estando entre un grupo de personas ¿prefieres mantenerte callado que estar hablando con los demás?</label>
+                  <select class="form-control" id="p7" name="p7">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p8">8. Elije la opción en donde se encuentre el o los oficios que crees que iría mejor contigo: </label>
+                  <label>1. Científico, Doctor, Maestro, Psicólogo, Arquitecto</label>
+                  <label>2. Pintor, Cantante, Escritor, Bailarín, Diseñador</label>
+                  <select class="form-control" id="p8" name="p8">
+                    <option value="1">Opcion 1</option>
+                    <option value="0">Opcion 2</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p9">9. ¿Al realizar un trabajo o actividad prefieres hacerlo individual?</label>
+                  <select class="form-control" id="p9" name="p9">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p10">10. ¿Frecuentemente haces compras compulsivas que después piensas que no eran necesarias?</label>
+                  <select class="form-control" id="p10" name="p10">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p11">11. ¿Eres una persona que siempre dirá la verdad tenga un alto impacto o no en tu vida o en la vida de otros?</label>
+                  <select class="form-control" id="p11" name="p11">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p12">12. Cuando tu equipo de trabajo, amigos o familiares están siendo negativos ¿tú los motivas a ver el lado positivo?</label>
+                  <select class="form-control" id="p12" name="p12">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p13">13. ¿Te gusta o te gustaría visitar, descubrir y explorar nuevos lugares del mundo, culturas y personas?</label>
+                  <select class="form-control" id="p13" name="p13">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p14">14. ¿El tener que estar o presentarte frente a una gran multitud te hace sentir incómodo, intranquilo, tímido o nervioso?</label>
+                  <select class="form-control" id="p14" name="p14">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p15">15. Preferirías:</label>
+                      <label>1. Aprender las cosas rápido</label>
+                      <label>2. Ser rico</label>
+                  <select class="form-control" id="p15" name="p15">
+                    <option value="1">Opción 1</option>
+                    <option value="0">Opción 2</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="p16">16. ¿Tu habitación en general y tu espacio de trabajo siempre se encuentran organizados?</label>
+                  <select class="form-control" id="p16" name="p16">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+              </div>
+                      
+              <button type="submit" class="button btn btn-success is-success mt-2">Guardar</button>
+              <a href="{{url_for('home')}}" class="button btn btn-primary is-primary mt-2">Volver</a>
+
+                
+            </form>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
