@@ -10,12 +10,14 @@
 
 
 <section class="section">
+    
     <div class="columns">
         <div class="column">
             <h3 class="is-size-3">Registros</h3>
             <br>
             <a href="{{url_for('formulario_agregar_signo')}}" class="button btn btn-primary is-success">Agregar registro</a>
             <hr>
+            <br>
 
             <table id="listaRegistros" class="table table-striped table-bordered" style="width:100%">
                 <thead>
@@ -67,5 +69,57 @@
             </table>
         </div>
     </div>
+
+    <br>
+    <hr>
+    <br>
+    <br>
+    <h4>Guía de cada número</h4>
+    <div class="form-group">
+        <label for="exampleFormControlSelect2"><i>Caracteristica correspondiente a cada numero cuando la respuesta es 1 (true)</i></label>
+        <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>1. Líderes</option>
+            <option>2. Críticos, Exigentes</option>
+            <option>3. Amables, Carismativos, Solidarios</option>
+            <option>4. Decidido, </option>
+            <option>5. Cariñosos, Afectivos, Sensibles, Romaticos</option>
+            <option>6. Extrovertidos</option>
+            <option>7. Antisocial</option>
+            <option>8. Analiticos</option>
+            <option>9. Individualista</option>
+            <option>10. Compulsivos</option>
+            <option>11. Confiables, Leales, Honestos</option>
+            <option>12. Optimistas, Alegres</option>
+            <option>13. Energico, Curioso, aventurero</option>
+            <option>14. Nerviosos, Inseguros, Impacientes</option>
+            <option>15. Sencillos, Pacificos</option>
+            <option>16. Organizados</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect2"><i>Caracteristica correspondiente a cada numero cuando la respuesta es 0 (false)</i></label>
+        <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>1. No líderes</option>
+            <option>2. Flexibles, Tolerantes, Blandos</option>
+            <option>3. Indiferentes</option>
+            <option>4. Indecisos</option>
+            <option>5. Frios, No Romaticos</option>
+            <option>6. Introvertidos, Timidos</option>
+            <option>7. Sociable, Amigable</option>
+            <option>8. Artisticos, Creativos, Soñadores</option>
+            <option>9. Trabajo en equipo, Colaborativos</option>
+            <option>10. Reflexivos</option>
+            <option>11. Serios, Prudentes, Deshonestos</option>
+            <option>12. Negativos, Melancolicos</option>
+            <option>13. Aburrido</option>
+            <option>14. Tranquilos, Seguros, Pacientes</option>
+            <option>15. Egocentricos, Agresivos</option>
+            <option>16. Desorganizados</option>
+        </select>
+    </div>
+
+
+      
 </section>
 {% endblock %}
