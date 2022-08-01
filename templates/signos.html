@@ -15,7 +15,17 @@
         <div class="column">
             <h3 class="is-size-3">Registros</h3>
             <br>
+            <div style="float: left;">
             <a href="{{url_for('formulario_agregar_signo')}}" class="button btn btn-primary is-success">Agregar registro</a>
+            </div>
+            <div aling="center" style="float: right;">
+                <a href="{{ './static/data/exported_data.xlsx' }}" target="_blank">
+                    <img src="{{ url_for('static', filename='img/xlsx.png')}}" style="height: auto; width:60px;">
+                </a>
+                <p><b>Exportar</b></p>
+            </div>
+
+            <br><br><br><br>
             <hr>
             <br>
 
@@ -72,7 +82,7 @@
 
     <br>
     <hr>
-    <h4>Número de signo</h4>
+    <h4>Número de signo zodiacal</h4>
     <div class="form-group">
         <select multiple class="form-control" id="exampleFormControlSelect2">
             <option>1. Capricornio</option>

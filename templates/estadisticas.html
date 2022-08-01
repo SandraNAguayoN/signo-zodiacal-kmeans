@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block title %} Estadísticas de los datos {% endblock %}
+
+{% block content %}
+<h4>{{ name }}</h4>
+<br>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link" id="nav-signos-tab" data-toggle="tab" href="#nav-signos" role="tab" aria-controls="nav-signos" aria-selected="true">Gráficas Signos</a>
+            <a class="nav-item nav-link active" id="nav-caracteristicas-tab" data-toggle="tab" href="#nav-caracteristicas" role="tab" aria-controls="nav-caracteristicas" aria-selected="false">Gráficas Características</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">...</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade" id="nav-signos" role="tabpanel" aria-labelledby="nav-signos-tab">
+            <br>
+            <div aling="center" style="float: left;">
+                <img src={{ url_signos }} alt="Chart" height="auto" width="width">              
+            </div>
+            
+            <div class="form-group" style="width: 300px; float: right; padding-right: 100px;">
+
+                <div aling="center">
+                    <a href="{{ './static/pdf/grafica_cantidad_signos.pdf' }}" target="_blank">
+                        <img src="{{ url_for('static', filename='img/pdf.png')}}" style="height: auto; width:60px;">
+                    </a>
+                    <p><b>Exportar</b></p>
+                </div>
+                <br>
+                <h6><i>Número de signo zodiacal:</i></h6>
+                <select multiple class="form-control" id="exampleFormControlSelect2">
+                    <option>1. Capricornio</option>
+                    <option>2. Acuario</option>
+                    <option>3. Piscis</option>
+                    <option>4. Aries</option>
+                    <option>5. Tauro</option>
+                    <option>6. Geminis</option>
+                    <option>7. Cáncer</option>
+                    <option>8. Leo</option>
+                    <option>9. Virgo</option>
+                    <option>10. Libra</option>
+                    <option>11. Escorpio</option>
+                    <option>12. Sagitario</option>
+                </select>
+            </div>
+
+
+        </div>
+        <div class="tab-pane fade show active" id="nav-caracteristicas" role="tabpanel" aria-labelledby="nav-caracteristicas-tab">
+            <br>
+            <label>Se genera la gráfica de la caracteristica seleccionada, que muestra el porcentaje de personas que <b>Si</b> tienen esa característica y el porcentaje de las que <b>No</b>.</label>
+            <br><br>
+            <form action="{{url_for('graficaEstadisticas')}}" method="POST">
+            <div class="input-group mb-3" style="width: 270px;">
+                <select id="slcCaracteristicas" name="slcCaracteristicas" class="custom-select">     
+                    <option selected>Seleccionar caracteristica...</option>
+                    <option value="lider">Líder</option>
+                    <option value="cri_exi">Críticos y exigentes</option>
+                    <option value="ama_car">Amables y cariñosos</option>
+                    <option value="decidido">Decididos</option>
+                    <option value="afe_sen">Afectivos y sensibles</option>
+                    <option value="extrovertido">Extrovertidos</option>
+                    <option value="sociable">Sociables</option>
+                    <option value="analitico">Analíticos</option>
+                    <option value="trabajo_equipo">Trabajo en equipo</option>
+                    <option value="compulsiva">Compulsivas</option>
+                    <option value="conf_lea">Confiables y leales</option>
+                    <option value="opt_ale">Optimistas y alegres</option>
+                    <option value="ene_cur">Enérgicos y curiosos</option>
+                    <option value="tran_seg">Tranquilos y seguros</option>
+                    <option value="senc_pac">Sencillos y pacíficos</option>
+                    <option value="organizado">Organizados</option>
+                </select>
+                <div class="input-group-append">
+                <button class="btn btn-outline-info" type="submit">Aceptar</button>
+                </div>
+            </div>
+            </form>
+            
+            <div aling="center" style="float:left; padding-left:200px;">
+                <img src={{ url_caracteristicas }} alt="Chart" height="auto" width="width">
+            </div>
+
+            <div aling="center" style="float: right;">
+                <a href="{{ './static/pdf/grafica_cantidad.pdf' }}" target="_blank">
+                    <img src="{{ url_for('static', filename='img/pdf.png')}}" style="height: auto; width:60px;">
+                </a>
+                <p><b>Exportar</b></p>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+    </div>
+
+
+
+
+{% endblock %}

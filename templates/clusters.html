@@ -1,3 +1,21 @@
- <p>{{ name }}</p>
+{% extends "layout.html" %}
+{% block title %} Analisis de los datos {% endblock %}
 
-  <img src={{ url}} alt="Chart" height="auto" width="width">
+{% block content %}
+<h4>{{ name }}</h4>
+
+<img src={{ url}} alt="Chart" height="auto" width="width">
+
+<p>De acuerdo a lo mostrado en la gráfica elegir el número de clusters para entrenar el algoritmo:</p>
+
+<form action="{{url_for('entrenarAlgoritmo')}}" method="POST">
+<div class="input-group mb-3" style="width: 270px;">
+    <input type="number" min="2" max="12" id="nclusters" name="nclusters" class="form-control" placeholder="Número de clusters" aria-label="Número de clusters" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit">Aceptar</button>
+    </div>
+  </div>
+</form>
+  
+
+{% endblock %}
