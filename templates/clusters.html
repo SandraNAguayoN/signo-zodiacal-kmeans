@@ -2,20 +2,118 @@
 {% block title %} Analisis de los datos {% endblock %}
 
 {% block content %}
-<h4>{{ name }}</h4>
 
-<img src={{ url}} alt="Chart" height="auto" width="width">
+<script type="text/javascript">
+  $(document).ready(function () {
+      $('#listaRegistros').DataTable();
+  });
+</script>
 
-<p>De acuerdo a lo mostrado en la gráfica elegir el número de clusters para entrenar el algoritmo:</p>
+<div>
 
-<form action="{{url_for('entrenarAlgoritmo')}}" method="POST">
+
+<p>Ingresar el numero de un registro para predecirlo:</p>
+
+<form action="{{url_for('predecirSigno')}}" method="POST">
 <div class="input-group mb-3" style="width: 270px;">
-    <input type="number" min="2" max="12" id="nclusters" name="nclusters" class="form-control" placeholder="Número de clusters" aria-label="Número de clusters" aria-describedby="basic-addon2">
+    <input type="number" min="1" max="60" id="nMuestra" name="nMuestra" class="form-control" placeholder="Número de muestra" aria-label="Número de muestra" aria-describedby="basic-addon2">
     <div class="input-group-append">
-      <button class="btn btn-outline-info" type="submit">Aceptar</button>
+      <button class="btn btn-outline-primary" type="submit">Aceptar</button>
     </div>
   </div>
 </form>
-  
+</div>
+
+<p>Ver número de signo zodiacal</p>
+<div class="form-group" style="width: 200px;">
+    <select class="form-control" id="exampleFormControlSelect2">
+      <option>1. Capricornio</option>
+      <option>2. Acuario</option>
+      <option>3. Piscis</option>
+      <option>4. Aries</option>
+      <option>5. Tauro</option>
+      <option>6. Geminis</option>
+      <option>7. Cáncer</option>
+      <option>8. Leo</option>
+      <option>9. Virgo</option>
+      <option>10. Libra</option>
+      <option>11. Escorpio</option>
+      <option>12. Sagitario</option>
+    </select>
+</div>
+
+{% if prediccion %} 
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  El signo de la persona <strong>{{prediccion}}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} 
+
+<table id="listaRegistros" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Signo</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+          <th>7</th>
+          <th>8</th>
+          <th>9</th>
+          <th>10</th>
+          <th>11</th>
+          <th>12</th>
+          <th>13</th>
+          <th>14</th>
+          <th>15</th>
+          <th>16</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for registro in registros %}
+      <tr>
+          <td>{{registro[0]}}</td>
+          <td>{{registro[1]}}</td>
+          <td>{{registro[2]}}</td>
+          <td>{{registro[3]}}</td>
+          <td>{{registro[4]}}</td>
+          <td>{{registro[5]}}</td>
+          <td>{{registro[6]}}</td>
+          <td>{{registro[7]}}</td>
+          <td>{{registro[8]}}</td>
+          <td>{{registro[9]}}</td>
+          <td>{{registro[10]}}</td>
+          <td>{{registro[11]}}</td>
+          <td>{{registro[12]}}</td>
+          <td>{{registro[13]}}</td>
+          <td>{{registro[14]}}</td>
+          <td>{{registro[15]}}</td>
+          <td>{{registro[16]}}</td>
+          <td>{{registro[17]}}</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+<br><br><br><br>
+
+<div style="float: left;">
+  <h5>{{ name }}</h5>
+  <img src={{ url_codo}} alt="Chart" height="auto" width="width">
+</div>
+
+<div style="float:right;">
+  <h5>Centroides</h5>
+  <img src={{ url_centroides}} alt="Chart" height="auto" width="width">
+</div>
+
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 {% endblock %}

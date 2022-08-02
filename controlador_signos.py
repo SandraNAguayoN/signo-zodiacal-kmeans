@@ -57,7 +57,7 @@ def actualizar_juego(nombre, descripcion, precio, id):
 """
 
 def analisisClusters():
-    data = pd.read_csv('C:\\Users\\sandr\\exported_data.csv')
+    data = pd.read_csv(r'static\data\exported_data.csv')
     data = data.drop(['id'], axis = 1)
 
     #Se selecionan unos datos al azar para posteriormente verificar el clúster al que pertenecen
@@ -90,70 +90,174 @@ def analisisClusters():
         inercia.append(algoritmo.inertia_)
 
     #Se traza la curva de la suma de errores cuadráticos 
-    plt.figure(figsize=[5,6])
+    plt.figure(figsize=[4,3])
     plt.title('Método del Codo')
     plt.xlabel('No. de clusters')
     plt.ylabel('Inercia')
-    return plt.plot(list(range(1, 20)), inercia, marker='o')
+    plt.plot(list(range(1, 20)), inercia, marker='o')
+    return plt.savefig('./static/img/codo.png')
     #return plt.show()
 
-def entrenarAlgoritmo(nclusters):
-    data = pd.read_csv('C:\\Users\\sandr\\signos_zodiacales_2.csv')
 
-    #Se selecionan unos datos al azar para posteriormente verificar el clúster al que pertenecen
+def mostrarCentroides():
+    #### CARGAR LOS DATOS ####
+    data = pd.read_csv(r'static\data\exported_data.csv')
+    data = data.drop(['id'], axis = 1)
+
+    ### DATOS DE MUESTRA ###
+    #Se selecionan unos datos al azar para posteriormente verificar el clúster 
+    #al que pertenecen
     indices = [23, 24, 25]
+    #indices = [23]
     muestras = pd.DataFrame(data.loc[indices], 
                         columns = data.keys()).reset_index(drop = True)
     data = data.drop(indices, axis = 0)
 
-    #Eliminamos las columnas de región y canal 
+    ### PROCESAMIENTO DE LOS DATOS ###
+    #Eliminamos las columnas 
     data = data.drop(['signo_zodiacal'], axis = 1)
     muestras = muestras.drop(['signo_zodiacal'], axis = 1)
 
     #Se realiza el escalamiento de los datos
+    from sklearn import preprocessing
+
     data_escalada = preprocessing.Normalizer().fit_transform(data)
     muestras_escalada = preprocessing.Normalizer().fit_transform(muestras)
-    
+
     ### ANÁLISIS DE MACHINE LEARNING ###
+    from sklearn.cluster import KMeans
+
     #Se determina las variables a evaluar
     X = data_escalada.copy()
 
     ## Se aplica el algoritmo de clustering ##
     #Se define el algoritmo junto con el valor de K
-    algoritmo = KMeans(n_clusters = int(nclusters), init = 'k-means++',  #se pasa el n de clusters que se especificó en el form
+    algoritmo = KMeans(n_clusters = 12, init = 'k-means++', 
                     max_iter = 300, n_init = 10)
+
     #Se entrena el algoritmo
     algoritmo.fit(X)
 
+    #Se obtiene los datos de los centroides y las etiquetas
+    centroides, etiquetas = algoritmo.cluster_centers_, algoritmo.labels_
 
-def predecir_signo(nClusters):
-    #obtener el ultimo registro de la bd
-    data = pd.read_csv('C:\\Users\\sandr\\signos_zodiacales_2.csv')
+    ### GRAFICAR LOS DATOS JUNTO A LOS RESULTADOS ###
+    # Se aplica la reducción de dimensionalidad a los datos
+    from sklearn.decomposition import PCA
 
-    #Se selecionan unos datos al azar para posteriormente verificar el clúster al que pertenecen
-    indices = [23, 24, 25]
+    modelo_pca = PCA(n_components = 2)
+    modelo_pca.fit(X)
+    pca = modelo_pca.transform(X) 
+
+    #Se aplica la reducción de dimsensionalidad a los centroides
+    centroides_pca = modelo_pca.transform(centroides)
+
+    # Se define los colores de cada clúster
+    colores = ['blue', 'red', 'green', 'orange', 'gray', 'brown', 'pink', 'yellow', '#C8820F', '#0FC8C2', '#B96363', '#47FF2E']
+
+    #Se asignan los colores a cada clústeres
+    colores_cluster = [colores[etiquetas[i]] for i in range(len(pca))]
+
+    #Se grafica los componentes PCA
+    plt.scatter(pca[:, 0], pca[:, 1], c = colores_cluster, 
+                marker = 'o',alpha = 0.4)
+
+    #Se grafican los centroides
+    plt.scatter(centroides_pca[:, 0], centroides_pca[:, 1],
+                marker = 'x', s = 100, linewidths = 3, c = colores)
+
+    #Se guadan los datos en una variable para que sea fácil escribir el código
+    xvector = modelo_pca.components_[0] * max(pca[:,0])
+    yvector = modelo_pca.components_[1] * max(pca[:,1])
+    columnas = data.columns
+
+    #Se grafican los nombres de los clústeres con la distancia del vector
+    for i in range(len(columnas)):
+        #Se grafican los vectores
+        plt.arrow(0, 0, xvector[i], yvector[i], color = 'black', 
+                width = 0.0005, head_width = 0.02, alpha = 0.75)
+        #Se colocan los nombres
+        plt.text(xvector[i], yvector[i], list(columnas)[i], color='black', 
+                alpha=0.75)
+
+    return plt.savefig('./static/img/centroides.png')
+
+
+def predecirSigno(nMuestra):
+    #### CARGAR LOS DATOS ####
+    data = pd.read_csv(r'static\data\exported_data.csv')
+    data = data.drop(['id'], axis = 1)
+
+    ### DATOS DE MUESTRA ###
+    #Se selecionan unos datos al azar para posteriormente verificar el clúster 
+    #al que pertenecen
+    #indices = [23, 24, 25]
+    indices = [nMuestra]
     muestras = pd.DataFrame(data.loc[indices], 
                         columns = data.keys()).reset_index(drop = True)
     data = data.drop(indices, axis = 0)
 
-    #Eliminamos las columnas de región y canal 
+    ### PROCESAMIENTO DE LOS DATOS ###
+    #Eliminamos las columnas 
     data = data.drop(['signo_zodiacal'], axis = 1)
     muestras = muestras.drop(['signo_zodiacal'], axis = 1)
 
     #Se realiza el escalamiento de los datos
+    from sklearn import preprocessing
+
     data_escalada = preprocessing.Normalizer().fit_transform(data)
     muestras_escalada = preprocessing.Normalizer().fit_transform(muestras)
-    
+
     ### ANÁLISIS DE MACHINE LEARNING ###
+    from sklearn.cluster import KMeans
+
     #Se determina las variables a evaluar
     X = data_escalada.copy()
 
     ## Se aplica el algoritmo de clustering ##
     #Se define el algoritmo junto con el valor de K
-    algoritmo = KMeans(n_clusters = int(nclusters), init = 'k-means++',  #se pasa el n de clusters que se especificó en el form
+    algoritmo = KMeans(n_clusters = 12, init = 'k-means++', 
                     max_iter = 300, n_init = 10)
+
     #Se entrena el algoritmo
     algoritmo.fit(X)
+
+    #Se obtiene los datos de los centroides y las etiquetas
+    centroides, etiquetas = algoritmo.cluster_centers_, algoritmo.labels_
+
+    #Utilicemos los datos de muestras y verifiquemos en que cluster se encuentran
+    muestra_prediccion = algoritmo.predict(muestras_escalada)
+
+    for i, pred in enumerate(muestra_prediccion):
+        print("Muestra", i, "se encuentra en el clúster:", pred)
+        prediccion = pred
+        
+    if prediccion == 0:
+        pred = 'Capricornio'
+    elif prediccion == 1:
+        pred = 'Acuario'
+    elif prediccion == 2:
+        pred = 'Piscis'
+    elif prediccion == 3:
+        pred = 'Aries'
+    elif prediccion == 4:
+        pred = 'Tauro'
+    elif prediccion == 5:
+        pred = 'Géminis'
+    elif prediccion == 6:
+        pred = 'Cáncer'
+    elif prediccion == 7:
+        pred = 'Leo'
+    elif prediccion == 8:
+        pred = 'Virgo'
+    elif prediccion == 9:
+        pred = 'Libra'
+    elif prediccion == 10:
+        pred = 'Escorpio'
+    elif prediccion == 11:
+        pred = 'Sagitario'
+
+    return f'{indices} es {pred}'
 
 def graficaSignos():
     data = pd.read_csv(r'static\data\exported_data.csv')

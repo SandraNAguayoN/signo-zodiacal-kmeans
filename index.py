@@ -25,6 +25,7 @@ import logging
 import pymysql
 from os import remove
 
+from flask import url_for
 
 app = Flask(__name__)
 
@@ -122,13 +123,22 @@ def clusters():
   return render_template('clusters.html', name = 'new_plot', url ='./static/img/new_plot.png')
 '''
 
-@app.route('/clusters')
-def clusters():
+@app.route('/cluster')
+def cluster():
     plt.switch_backend('agg')
     controlador_signos.analisisClusters()
-    plt.savefig('./static/img/codo.png')
     plt.close()
-    return render_template('clusters.html', name = 'Codo', url ='./static/img/codo.png')
+    return redirect("/clusters")
+    
+
+@app.route('/clusters')
+def clusters():
+    controlador_signos.mostrarCentroides()
+    plt.close()
+    pred = request.args.get('prediccion', None)
+    registros = controlador_signos.obtener_registros()
+    return render_template('clusters.html', name = 'Codo', url_codo ='./static/img/codo.png', url_centroides = './static/img/centroides.png', prediccion = pred, registros = registros)
+
 
 #Función para método que genera la gráfica de estadistica seleccionada
 @app.route('/graficaEstadisticas', methods=["POST"])
@@ -154,6 +164,27 @@ def entrenarAlgoritmo():
     nclusters = request.form["nclusters"]
     controlador_signos.entrenar_algoritmo(nclusters)
     return redirect("/clusters")
+
+
+#Función para predecir signo
+@app.route('/predecirSigno', methods=["POST"])
+def predecirSigno():
+    nMuestra = request.form["nMuestra"]
+    res = controlador_signos.predecirSigno(int(nMuestra))
+    return redirect(url_for("clusters", prediccion=res))
+
+
+@app.route('/', methods = ['GET', 'POST']) 
+def index(): 
+    if request.method == 'POST': 
+        date = request.form.get('date') 
+        return redirect(url_for('booking', date=date)) 
+    return render_template('main/index.html') 
+    
+@app.route('/booking') 
+def booking(): 
+    date = request.args.get('date', None) 
+    return render_template('main/booking.html', date=date)
 
 
 if __name__ == '__main__':
