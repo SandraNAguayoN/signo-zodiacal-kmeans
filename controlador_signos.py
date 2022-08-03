@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
 
+import csv
+
 #Función para crear un registro a la base de datos
 def insertar_signo(signo_zodiacal, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16):
     conexion = obtener_conexion()
@@ -354,3 +356,28 @@ def graficaEstadisticas(slcCaracteristicas):
     plt.savefig('./static/pdf/grafica_cantidad.pdf') # Guardar en formato .pdf
     return plt.savefig('./static/img/grafica_cantidad.png') # Guardar en formato .png
 
+def cargarDataBaseDatos(sRuta):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        with open(sRuta, 'r') as csvFile:
+            reader = csv.reader(csvFile, delimiter=',')
+            for row in reader:
+                if row[0] != 'signo_zodiacal': #No toma en cuenta la primera fila que contiene los nombres de las columnas
+                    cursor.execute(
+                    "INSERT INTO signos_zodiacales (signo_zodiacal, lider, cri_exi, ama_car, decidido, afe_sen, extrovertido, sociable, analitico, trabajo_equipo, compulsiva, conf_lea, opt_ale, ene_cur, tran_seg, senc_pac, organizado) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s,%s,%s)",
+                    (str(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]), str(row[7]), str(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]), str(row[13]), str(row[14]), str(row[15]), str(row[16]))
+                    )
+            csvFile.close()
+    conexion.commit()
+    conexion.close()
+
+def cantidadTotalRegistros():
+    conexion = obtener_conexion()
+    cantidad = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM signos_zodiacales")
+        cantidad = cursor.fetchone()
+        
+    print("Esta es la cantidad",cantidad)
+    conexion.close()
+    return cantidad

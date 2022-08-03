@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, Response, url_for
 import controlador_signos
-
-from flask import Response
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import  FileStorage #carga de archivo
 
 import numpy as np
 import pandas as pd
@@ -12,20 +12,14 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-
+import os
+from os import remove
 import io
 import random
-from flask import Response
-
-import os
-from bd import obtener_conexion
-
 import logging
 
+from bd import obtener_conexion
 import pymysql
-from os import remove
-
-from flask import url_for
 
 app = Flask(__name__)
 
@@ -96,7 +90,9 @@ def signos():
     df.to_csv(r'static\data\exported_data.csv', index = False) 
     df.to_excel(r'static\data\exported_data.xlsx', index=False)
 
-    return render_template("signos.html", registros=registros)
+    res = request.args.get('respuesta', None)
+    cantidad = controlador_signos.cantidadTotalRegistros()
+    return render_template("signos.html", registros=registros, respuesta = res, cantidad = cantidad)
 
 
 '''
@@ -174,17 +170,21 @@ def predecirSigno():
     return redirect(url_for("clusters", prediccion=res))
 
 
-@app.route('/', methods = ['GET', 'POST']) 
-def index(): 
-    if request.method == 'POST': 
-        date = request.form.get('date') 
-        return redirect(url_for('booking', date=date)) 
-    return render_template('main/index.html') 
-    
-@app.route('/booking') 
-def booking(): 
-    date = request.args.get('date', None) 
-    return render_template('main/booking.html', date=date)
+app.config['UPLOAD_FOLDER'] = './uploads'
+
+@app.route("/upload", methods=['POST'])
+def uploader():
+    if request.method == 'POST':
+        # obtenemos el archivo del input "archivo"
+        f = request.files['archivo']
+        filename = secure_filename(f.filename)
+        # Guardamos el archivo en el directorio "Archivos PDF"
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        sRuta = 'C:/Users/sandr/Downloads/signo-zodiacal/uploads/'+filename
+        # Retornamos una respuesta satisfactoria
+        controlador_signos.cargarDataBaseDatos(sRuta)
+        cantidad = controlador_signos.cantidadTotalRegistros()
+        return redirect(url_for("signos", respuesta='Archivo cargado correctamente', cantidad = cantidad))
 
 
 if __name__ == '__main__':
