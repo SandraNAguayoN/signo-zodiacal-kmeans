@@ -19,6 +19,7 @@ import random
 import logging
 
 from bd import obtener_conexion
+
 import pymysql
 
 app = Flask(__name__)

@@ -18,7 +18,6 @@ def insertar_signo(signo_zodiacal, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11,
     conexion.commit()
     conexion.close()
 
-
 def obtener_registros():
     conexion = obtener_conexion()
     registros = []
@@ -92,7 +91,7 @@ def analisisClusters():
         inercia.append(algoritmo.inertia_)
 
     #Se traza la curva de la suma de errores cuadráticos 
-    plt.figure(figsize=[4,3])
+    plt.figure(figsize=[4,4])
     plt.title('Método del Codo')
     plt.xlabel('No. de clusters')
     plt.ylabel('Inercia')
@@ -194,7 +193,7 @@ def predecirSigno(nMuestra):
     #Se selecionan unos datos al azar para posteriormente verificar el clúster 
     #al que pertenecen
     #indices = [23, 24, 25]
-    indices = [nMuestra]
+    indices = [nMuestra-1]
     muestras = pd.DataFrame(data.loc[indices], 
                         columns = data.keys()).reset_index(drop = True)
     data = data.drop(indices, axis = 0)
@@ -259,7 +258,7 @@ def predecirSigno(nMuestra):
     elif prediccion == 11:
         pred = 'Sagitario'
 
-    return f'{indices} es {pred}'
+    return f'{nMuestra} es {pred}'
 
 def graficaSignos():
     data = pd.read_csv(r'static\data\exported_data.csv')
